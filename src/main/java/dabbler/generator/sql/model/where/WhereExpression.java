@@ -1,9 +1,9 @@
 package dabbler.generator.sql.model.where;
 
-import com.dabbler.common.utils.ConvertUtils;
-import com.dabbler.generator.sql.model.OperatorEnum;
-import com.dabbler.generator.sql.model.SQLConstant;
 import com.google.common.collect.Lists;
+import dabbler.common.utils.ConvertUtils;
+import dabbler.generator.sql.model.OperatorEnum;
+import dabbler.generator.sql.model.SQLConstant;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
