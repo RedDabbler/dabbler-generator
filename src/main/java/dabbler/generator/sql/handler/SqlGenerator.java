@@ -1,7 +1,7 @@
 package dabbler.generator.sql.handler;
 
-import com.dabbler.generator.sql.model.SQL;
 import com.google.common.collect.Lists;
+import dabbler.generator.sql.model.SQL;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.List;
@@ -15,6 +15,7 @@ public class SqlGenerator {
 
         List<String> resultList = Lists.newArrayList();
         for (SQL sql : sqlList) {
+
 
         }
 

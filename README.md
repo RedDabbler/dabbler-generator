@@ -1,1 +1,1 @@
-# dabbler-mybatis_generator
+# dabbler-generator
