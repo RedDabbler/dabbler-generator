@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Model>
-  <DataType name="OilPlan">
+  <DataType name="Plan">
     <Property name="matchType">com.dabbler.generator.entity.Plan</Property>
     <PropertyDef name="id">
       <Property></Property>
@@ -18,7 +18,7 @@
       <Property></Property>
       <Property name="label">部门名称</Property>
     </PropertyDef>
-    <PropertyDef name="oilType">
+    <PropertyDef name="type">
       <Property name="dataType">int</Property>
       <Property name="label">类型</Property>
     </PropertyDef>
@@ -38,15 +38,15 @@
       <Property name="dataType">Date</Property>
       <Property name="label">制表时间</Property>
     </PropertyDef>
-    <PropertyDef name="checkState">
+    <PropertyDef name="opinion">
       <Property></Property>
       <Property name="label">审批意见</Property>
     </PropertyDef>
-    <PropertyDef name="checkPerson">
+    <PropertyDef name="approver">
       <Property></Property>
       <Property name="label">审批人</Property>
     </PropertyDef>
-    <PropertyDef name="checkTime">
+    <PropertyDef name="approveTime">
       <Property name="dataType">Date</Property>
       <Property name="label">审批时间</Property>
     </PropertyDef>
