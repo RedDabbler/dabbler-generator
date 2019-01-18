@@ -1,4 +1,4 @@
-package dabbler.generator.sql.model;
+package com.dabbler.generator.generator.sql.model;
 
 
 import lombok.Data;

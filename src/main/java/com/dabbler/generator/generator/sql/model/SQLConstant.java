@@ -1,4 +1,4 @@
-package dabbler.generator.sql.model;
+package com.dabbler.generator.generator.sql.model;
 
 public class SQLConstant {
     public static final String SQL_IN = " IN ";

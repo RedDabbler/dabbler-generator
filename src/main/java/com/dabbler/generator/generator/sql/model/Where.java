@@ -1,7 +1,7 @@
-package dabbler.generator.sql.model;
+package com.dabbler.generator.generator.sql.model;
 
+import com.dabbler.generator.generator.sql.model.where.WhereExpression;
 import com.google.common.base.Joiner;
-import dabbler.generator.sql.model.where.WhereExpression;
 import lombok.Data;
 
 import java.util.List;

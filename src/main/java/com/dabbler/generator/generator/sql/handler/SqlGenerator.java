@@ -1,7 +1,7 @@
-package dabbler.generator.sql.handler;
+package com.dabbler.generator.generator.sql.handler;
 
 import com.google.common.collect.Lists;
-import dabbler.generator.sql.model.SQL;
+import com.dabbler.generator.generator.sql.model.SQL;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.List;

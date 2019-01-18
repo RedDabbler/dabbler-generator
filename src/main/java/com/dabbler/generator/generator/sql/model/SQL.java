@@ -1,7 +1,6 @@
-package dabbler.generator.sql.model;
+package com.dabbler.generator.generator.sql.model;
 
 import com.google.common.base.Joiner;
-import com.sun.istack.internal.NotNull;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
@@ -13,7 +12,6 @@ public abstract class SQL {
     private SQLTypeEnum type;
     private List<SelectField> selectFieldList;
 
-    @NotNull
     private FromTable fromTable;
 
     private Where where;

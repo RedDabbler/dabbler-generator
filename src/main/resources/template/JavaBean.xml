@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model>
+  <DataType name="OilPlan">
+    <Property name="matchType">com.dabbler.generator.entity.Plan</Property>
+    <PropertyDef name="id">
+      <Property></Property>
+      <Property name="label">ID</Property>
+    </PropertyDef>
+    <PropertyDef name="name">
+      <Property></Property>
+      <Property name="label">计划名称</Property>
+    </PropertyDef>
+    <PropertyDef name="deptId">
+      <Property></Property>
+      <Property name="label">部门ID</Property>
+    </PropertyDef>
+    <PropertyDef name="deptName">
+      <Property></Property>
+      <Property name="label">部门名称</Property>
+    </PropertyDef>
+    <PropertyDef name="oilType">
+      <Property name="dataType">int</Property>
+      <Property name="label">类型</Property>
+    </PropertyDef>
+    <PropertyDef name="startDate">
+      <Property name="dataType">Date</Property>
+      <Property name="label">开始时间</Property>
+    </PropertyDef>
+    <PropertyDef name="endDate">
+      <Property name="dataType">Date</Property>
+      <Property name="label">结束时间</Property>
+    </PropertyDef>
+    <PropertyDef name="makePerson">
+      <Property></Property>
+      <Property name="label">制表人</Property>
+    </PropertyDef>
+    <PropertyDef name="makeTime">
+      <Property name="dataType">Date</Property>
+      <Property name="label">制表时间</Property>
+    </PropertyDef>
+    <PropertyDef name="checkState">
+      <Property></Property>
+      <Property name="label">审批意见</Property>
+    </PropertyDef>
+    <PropertyDef name="checkPerson">
+      <Property></Property>
+      <Property name="label">审批人</Property>
+    </PropertyDef>
+    <PropertyDef name="checkTime">
+      <Property name="dataType">Date</Property>
+      <Property name="label">审批时间</Property>
+    </PropertyDef>
+    <PropertyDef name="state">
+      <Property name="dataType">int</Property>
+      <Property name="label">流程状态</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">0</Property>
+              <Property name="value">新建</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">已提交</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">已审批</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+    </PropertyDef>
+  </DataType>
+</Model>

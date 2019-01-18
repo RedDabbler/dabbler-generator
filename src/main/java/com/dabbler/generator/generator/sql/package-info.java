@@ -1,4 +1,4 @@
-package dabbler.generator.sql;
+package com.dabbler.generator.generator.sql;
 
 /** TODO
  1.代码构建sql

@@ -1,4 +1,4 @@
-package dabbler.generator;
+package com.dabbler.generator.generator;
 
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.Configuration;

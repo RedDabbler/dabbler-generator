@@ -1,4 +1,4 @@
-package dabbler.common.utils;
+package com.dabbler.generator.common.utils;
 
 import com.google.common.base.Joiner;
 
