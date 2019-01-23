@@ -1,6 +1,6 @@
-package com.dabbler.generator.generator.sql.model;
+package com.dabbler.generator.handler.sql.model;
 
-import com.dabbler.generator.generator.sql.model.where.WhereExpression;
+import com.dabbler.generator.handler.sql.model.where.WhereExpression;
 import com.google.common.base.Joiner;
 import lombok.Data;
 

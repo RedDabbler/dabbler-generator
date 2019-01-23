@@ -1,4 +1,4 @@
-package com.dabbler.generator.generator;
+package com.dabbler.generator.handler;
 
 import org.mybatis.generator.api.CommentGenerator;
 
