@@ -12,6 +12,9 @@ import lombok.Setter;
 public class FieldMeta {
     private String className;
     private String fieldName;
+    private String columnName;
     private String fieldType;
     private String fieldComment;
+    private boolean primary;
+    private boolean notNull;
 }

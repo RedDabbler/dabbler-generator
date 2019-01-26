@@ -1,4 +1,4 @@
-package com.dabbler.generator.entity;
+package com.dabbler.generator.entity.db;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,4 +16,5 @@ public class Table {
     private String tableComment;
     private String tableType;
     private List<Column> columnList;
+    private PrimaryKey primaryKey;
 }

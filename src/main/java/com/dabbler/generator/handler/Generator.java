@@ -1,17 +1,23 @@
 package com.dabbler.generator.handler;
 
+import com.dabbler.generator.common.utils.BeanHelper;
 import com.dabbler.generator.common.utils.FileHelper;
 import com.dabbler.generator.common.utils.FreeMarkerHelper;
-import com.dabbler.generator.common.utils.StringHelper;
-import com.dabbler.generator.entity.Column;
+import com.dabbler.generator.common.utils.PropertiesUtils;
+import com.dabbler.generator.entity.db.Column;
 import com.dabbler.generator.entity.EntityMeta;
 import com.dabbler.generator.entity.FieldMeta;
-import com.dabbler.generator.entity.Table;
+import com.dabbler.generator.entity.db.PrimaryKey;
+import com.dabbler.generator.entity.db.Table;
+import com.dabbler.generator.entity.enums.DataTypeMappingEnum;
 import com.dabbler.generator.provider.DbManager;
 import com.dabbler.generator.util.GeneratorUtils;
 import com.google.common.collect.Lists;
 import freemarker.template.Template;
-import org.apache.commons.lang3.text.WordUtils;
+import freemarker.template.TemplateException;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.xml.ConfigurationParser;
@@ -23,13 +29,17 @@ import sun.nio.cs.Surrogate;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public class Generator {
+    private List<Exception> exceptions = Lists.newArrayList();
 
     public static void generate() throws InterruptedException, SQLException, IOException, XMLParserException, InvalidConfigurationException {
         List<String> warnings = new ArrayList<String>();
@@ -41,47 +51,40 @@ public class Generator {
         myBatisGenerator.generate(null);
     }
 
+
+
     public void generateByAllTable()throws Exception{
-        List<Table> tables = DbManager.getAllTables();
+        Connection connection = DbManager.getConnect();
+        DatabaseMetaData databaseMetaData = DbManager.getDatabaseMetaData(connection);
+        List<Table> tables = DbManager.getAllTables(databaseMetaData);
         for(Table table:tables){
             generateByTable(table);
+            log.info("generate template files by table:{} complete ");
         }
     }
 
-    public String getOutPutPath(){
-        return "f:\\output";
-    }
-
-    public String getPackageName(){
+    public static String getBasePackageName(){
         return "com.company.sys";
     }
 
-    public String getTemplateDir(){
-        return "F:\\GitHome\\dabbler-generator\\src\\main\\resources\\template";
-    }
-
-    public void generateByTable(Table table) throws Exception{
+    public void generateByTable(Table table) throws IOException,TemplateException{
         EntityMeta entityMeta = convert(table);
-        entityMeta.setPackageName(getPackageName());
-        String className = entityMeta.getClassName();
-        String packageName = entityMeta.getPackageName();
-        String fileOutPutPath = getFilePath(getOutPutPath(),packageName,className+".java");
-        FileHelper.createIfNotExists(fileOutPutPath);
-        FileWriter fileWriter = new FileWriter(new File(fileOutPutPath));
-        Template template = FreeMarkerHelper.getTemplate(getTemplateDir(),"JavaEntity.java.ftl");
-        Map map = new HashMap();
-        map.put("entityMeta",entityMeta);
-        template.process(map,fileWriter);
-        fileWriter.flush();
-        fileWriter.close();
+        DataModel dataModel = getDataModel(table,entityMeta);
+        TemplateHandler.process(dataModel);
     }
 
-    private static String getFilePath(String outputPath,String packagePath,String fileName) throws IOException {
-        String packageDirPath = packagePath.replaceAll("\\.","\\\\");
-        String filePath = outputPath + File.separator + packageDirPath + File.separator + fileName;
-        FileHelper.createIfNotExists(filePath);
-        return filePath;
+    private DataModel getDataModel(Table table,EntityMeta entityMeta){
+        DataModel dataModel = new DataModel();
+        Map map = dataModel.getDataMap();
+        map.putAll(BeanHelper.descibe(entityMeta));
+        map.putAll(BeanHelper.descibe(table));
+        String basePackage = getBasePackageName();
+        map.put("basePackage",basePackage);
+        return dataModel;
     }
+
+
+
 
     private EntityMeta convert(Table table){
         EntityMeta entityMeta = new EntityMeta();
@@ -91,19 +94,64 @@ public class Generator {
             FieldMeta fieldMeta = convert(column);
             fieldMetas.add(fieldMeta);
         }
+        entityMeta.setFieldMetas(fieldMetas);
+        entityMeta.setPrimaryKeyField(getPrimaryKeyField(fieldMetas));
         entityMeta.setClassComment(table.getTableComment());
         String tableName = table.getTableName();
         entityMeta.setClassName(GeneratorUtils.tableToClass(tableName));
-        entityMeta.setFieldMetas(fieldMetas);
+
         return entityMeta;
+    }
+
+    /**
+     * 主键属性，目前只支持单列主键
+     * @param fieldMetas
+     * @return
+     */
+    private FieldMeta getPrimaryKeyField(List<FieldMeta> fieldMetas){
+        for (FieldMeta fieldMeta:fieldMetas){
+            if(fieldMeta.isPrimary()){
+                return fieldMeta;
+            }
+        }
+        return null;
     }
 
     private FieldMeta convert(Column column){
         FieldMeta fieldMeta = new FieldMeta();
         fieldMeta.setFieldComment(column.getColumnComment());
+        fieldMeta.setColumnName(column.getColumnName());
         fieldMeta.setFieldName(GeneratorUtils.columnToField(column.getColumnName()));
+        fieldMeta.setPrimary(column.isPrimary());
+        fieldMeta.setNotNull(column.isNotNull());
         fieldMeta.setClassName(GeneratorUtils.tableToClass(column.getTableName()));
-        fieldMeta.setFieldType("String");
+        String typeName= column.getTypeName();
+        DataTypeMappingEnum dataTypeMappingEnum = DataTypeMappingEnum.getByDbDataType(typeName);
+        if (dataTypeMappingEnum==null){
+            throw new UnsupportedOperationException("不识别的类型"+typeName);
+        }
+        fieldMeta.setFieldType(dataTypeMappingEnum.getClassName().getSimpleName());
         return fieldMeta;
+    }
+
+    public class DataModel{
+        private Map DataMap = new HashMap();
+        private String generatorFilePath;
+
+        public Map getDataMap() {
+            return DataMap;
+        }
+
+        public void setDataMap(Map dataMap) {
+            DataMap = dataMap;
+        }
+
+        public String getGeneratorFilePath() {
+            return generatorFilePath;
+        }
+
+        public void setGeneratorFilePath(String generatorFilePath) {
+            this.generatorFilePath = generatorFilePath;
+        }
     }
 }

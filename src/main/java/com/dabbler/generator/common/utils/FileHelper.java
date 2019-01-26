@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 
 public class FileHelper {
@@ -27,7 +28,7 @@ public class FileHelper {
      * @param file
      * @return
      */
-    public List<File> listFiles(File file){
+    public static List<File> listFiles(File file){
         Preconditions.checkArgument(file.exists(),"文件不存在");
         List<File> files = Lists.newArrayList();
         recursionFiles(file,files);
@@ -48,5 +49,12 @@ public class FileHelper {
        for(File tmpFile:files){
            recursionFiles(tmpFile,resultFile);
        }
+    }
+
+
+    public static Path getRelativePath(File srcFile,File descFile){
+        Path srcPath = srcFile.toPath();
+        Path descPath = descFile.toPath();
+        return descPath.relativize(srcPath);
     }
 }

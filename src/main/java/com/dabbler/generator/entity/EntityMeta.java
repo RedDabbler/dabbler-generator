@@ -12,8 +12,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EntityMeta {
-    private String className; // short name
+    private String className;
     private String classComment;
-    private String packageName;
+//    private String packageName;
     private List<FieldMeta> fieldMetas;
+    private  FieldMeta primaryKeyField;
+
 }

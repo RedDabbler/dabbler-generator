@@ -1,7 +1,6 @@
 package com.dabbler.generator.util;
 
 import com.dabbler.generator.common.utils.StringHelper;
-import com.dabbler.generator.handler.Generator;
 import org.apache.commons.lang3.StringUtils;
 
 public class GeneratorUtils {

@@ -20,7 +20,6 @@ import java.util.List;
 @Slf4j
 public class XmlUtils {
 
-
     public static List<JavaBean> modelXmlParse(String filePath) throws Exception{
         File file = new File(filePath);
         Preconditions.checkArgument(file.exists()&&file.isFile(),"文件不存在");
