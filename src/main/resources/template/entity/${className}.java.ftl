@@ -1,5 +1,13 @@
 package ${basePackage}.entity;
-/**
+
+<#list fieldTypes as fieldType>
+<#if !fieldType?string?starts_with("java.lang")>
+import ${fieldType};
+</#if>
+</#list>
+
+/** @create ${createDate?string("yyyy-MM-dd hh:mm:ss")}
+  * @author ${author}
   * ${(classComment)!}
   */
 @Entity
@@ -11,7 +19,7 @@ public class ${className} implements Serializable {
     <#if fieldMeta.primary>
     @Id
     </#if>
-    @Column(name="${fieldMeta.columnName}")
+    @Column(name="${fieldMeta.columnName}" <#if fieldMeta.fieldType=="String"> length = ${fieldMeta.length} <#if fieldMeta.notNull>, nullable = false </#if></#if>)
     private ${fieldMeta.fieldType} ${fieldMeta.fieldName};
     </#list>
 
@@ -19,9 +27,7 @@ public class ${className} implements Serializable {
 
     }
 
-
     <#list fieldMetas as fieldMeta>
-
     public ${fieldMeta.fieldType} get${fieldMeta.fieldName?cap_first}(){
         return ${fieldMeta.fieldName};
     }

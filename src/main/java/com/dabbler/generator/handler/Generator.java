@@ -13,6 +13,7 @@ import com.dabbler.generator.entity.enums.DataTypeMappingEnum;
 import com.dabbler.generator.provider.DbManager;
 import com.dabbler.generator.util.GeneratorUtils;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
@@ -32,10 +33,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 public class Generator {
@@ -63,6 +61,7 @@ public class Generator {
         }
     }
 
+    //TODO
     public static String getBasePackageName(){
         return "com.company.sys";
     }
@@ -73,6 +72,14 @@ public class Generator {
         TemplateHandler.process(dataModel);
     }
 
+    //TODO
+    public static String getAuthor(){
+        return "RedDabbler";
+    }
+    // TODO
+    public static String getModule(){
+        return "simple-demo";
+    }
     private DataModel getDataModel(Table table,EntityMeta entityMeta){
         DataModel dataModel = new DataModel();
         Map map = dataModel.getDataMap();
@@ -80,6 +87,9 @@ public class Generator {
         map.putAll(BeanHelper.descibe(table));
         String basePackage = getBasePackageName();
         map.put("basePackage",basePackage);
+        map.put("createDate",new Date());
+        map.put("author",getAuthor());
+        map.put("moduleName",getModule());
         return dataModel;
     }
 
@@ -90,8 +100,11 @@ public class Generator {
         EntityMeta entityMeta = new EntityMeta();
         List<Column> columns = table.getColumnList();
         List<FieldMeta> fieldMetas = Lists.newArrayList();
+        Set<String> fieldTypeFullNames = Sets.newHashSet();
         for (Column column:columns){
             FieldMeta fieldMeta = convert(column);
+            String fieldTypeFullName = fieldMeta.getFieldTypeFullName();
+            fieldTypeFullNames.add(fieldTypeFullName);
             fieldMetas.add(fieldMeta);
         }
         entityMeta.setFieldMetas(fieldMetas);
@@ -99,6 +112,7 @@ public class Generator {
         entityMeta.setClassComment(table.getTableComment());
         String tableName = table.getTableName();
         entityMeta.setClassName(GeneratorUtils.tableToClass(tableName));
+        entityMeta.setFieldTypes(fieldTypeFullNames);
 
         return entityMeta;
     }
@@ -131,6 +145,7 @@ public class Generator {
             throw new UnsupportedOperationException("不识别的类型"+typeName);
         }
         fieldMeta.setFieldType(dataTypeMappingEnum.getClassName().getSimpleName());
+        fieldMeta.setFieldTypeFullName(dataTypeMappingEnum.getClassName().getName());
         return fieldMeta;
     }
 

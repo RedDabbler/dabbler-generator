@@ -1,6 +1,7 @@
 <generator>
     <outputdir>f:\\output</outputdir>
     <package>com.dabbler.template.sys</package>
+    <module>simple-demo</module>
 
 
 </generator>

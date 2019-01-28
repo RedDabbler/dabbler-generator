@@ -9,10 +9,12 @@ public class GeneratorUtils {
     }
 
     public static String tableToClass(String tableName){
-        return StringHelper.captial(tableName);
+        String table  = StringHelper.captial(tableName);
+        return table.replace("_","");
     }
 
     public static String columnToField(String columnName){
-        return StringUtils.uncapitalize(StringHelper.captial(columnName));
+        String column = StringUtils.uncapitalize(StringHelper.captial(columnName));
+        return column.replace("_","");
     }
 }

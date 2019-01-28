@@ -14,7 +14,9 @@ public class FieldMeta {
     private String fieldName;
     private String columnName;
     private String fieldType;
+    private String fieldTypeFullName;
     private String fieldComment;
+    private int length;
     private boolean primary;
     private boolean notNull;
 }

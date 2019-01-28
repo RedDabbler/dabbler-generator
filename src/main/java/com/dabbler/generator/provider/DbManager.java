@@ -1,5 +1,6 @@
 package com.dabbler.generator.provider;
 
+import com.dabbler.generator.common.utils.JDBCUtils;
 import com.dabbler.generator.entity.db.Column;
 import com.dabbler.generator.entity.db.PrimaryKey;
 import com.dabbler.generator.entity.db.Table;
@@ -15,24 +16,12 @@ public class DbManager {
     private static String url="jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=UTF-8";
     private static String userName="root";
     private static String password="root";
-    private static final String MYSQL_ALLMATCH_PATTERN ="%";
+    private static final String MYSQL_ALL_MATCH_PATTERN ="%";
 
+    // TODO 数据库连接池
     public static Connection getConnect(){
-        try {
-            Class.forName(driverClass);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-            Connection connection = DriverManager.getConnection(url,userName,password);
-            return connection;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return JDBCUtils.getConnect(driverClass,url,userName,password);
     }
-
-
     public static DatabaseMetaData getDatabaseMetaData(Connection connection){
         try {
             return connection.getMetaData();
@@ -44,7 +33,7 @@ public class DbManager {
     }
     public static List<Table> getAllTables(DatabaseMetaData databaseMetaData)throws SQLException{
         List<Table> tables = Lists.newArrayList();
-        ResultSet resultSet = databaseMetaData.getTables(null,null,MYSQL_ALLMATCH_PATTERN,null);
+        ResultSet resultSet = databaseMetaData.getTables(null,null,MYSQL_ALL_MATCH_PATTERN,null);
         while(resultSet.next()){
             Table table = new Table();
             String tableName = resultSet.getString("TABLE_NAME");
@@ -71,7 +60,7 @@ public class DbManager {
      */
     public static List<Column> getAllColumn(DatabaseMetaData databaseMetaData,String tableName,PrimaryKey primaryKey)throws SQLException{
         List<Column> columns = Lists.newArrayList();
-        ResultSet resultSet = databaseMetaData.getColumns(null,null,tableName,MYSQL_ALLMATCH_PATTERN);
+        ResultSet resultSet = databaseMetaData.getColumns(null,null,tableName,MYSQL_ALL_MATCH_PATTERN);
         while (resultSet.next()){
             Column column = new Column();
             column.setTableName(resultSet.getString("TABLE_NAME"));
