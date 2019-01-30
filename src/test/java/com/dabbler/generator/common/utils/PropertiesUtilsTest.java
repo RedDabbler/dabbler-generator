@@ -9,7 +9,7 @@ public class PropertiesUtilsTest {
     @Test
     public void getClassPath() {
         String rootPath = PropertiesUtils.getProjectBootPath();
-        String pat = PropertiesUtils.getClassPath();
+        String pat = PropertiesUtils.getClassLoaderPath();
         log.info(rootPath);
         log.info(pat);
     }

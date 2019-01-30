@@ -35,7 +35,7 @@ public class TemplateHandler {
     }
 
     public static String getTemplateDir(){
-        return PropertiesUtils.getClassPath()+File.separator+"template";
+        return PropertiesUtils.getClassLoaderPath()+File.separator+"template";
     }
 
     public static void process(Generator.DataModel dataModel) throws  TemplateException,IOException {

@@ -7,7 +7,6 @@ import ${fieldType};
     </#if>
 </#list>
 
-
 /**
   * @author ${author}
   * @create ${createDate?string("yyyy-MM-dd hh:mm:ss")}

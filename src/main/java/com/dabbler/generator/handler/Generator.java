@@ -1,55 +1,26 @@
 package com.dabbler.generator.handler;
 
 import com.dabbler.generator.common.utils.BeanHelper;
-import com.dabbler.generator.common.utils.FileHelper;
-import com.dabbler.generator.common.utils.FreeMarkerHelper;
-import com.dabbler.generator.common.utils.PropertiesUtils;
-import com.dabbler.generator.entity.db.Column;
 import com.dabbler.generator.entity.EntityMeta;
 import com.dabbler.generator.entity.FieldMeta;
-import com.dabbler.generator.entity.db.PrimaryKey;
+import com.dabbler.generator.entity.db.Column;
 import com.dabbler.generator.entity.db.Table;
 import com.dabbler.generator.entity.enums.DataTypeMappingEnum;
 import com.dabbler.generator.provider.DbManager;
 import com.dabbler.generator.util.GeneratorUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.mybatis.generator.api.MyBatisGenerator;
-import org.mybatis.generator.config.Configuration;
-import org.mybatis.generator.config.xml.ConfigurationParser;
-import org.mybatis.generator.exception.InvalidConfigurationException;
-import org.mybatis.generator.exception.XMLParserException;
-import org.mybatis.generator.internal.DefaultShellCallback;
-import sun.nio.cs.Surrogate;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
-import java.sql.SQLException;
 import java.util.*;
 
 @Slf4j
 public class Generator {
     private List<Exception> exceptions = Lists.newArrayList();
-
-    public static void generate() throws InterruptedException, SQLException, IOException, XMLParserException, InvalidConfigurationException {
-        List<String> warnings = new ArrayList<String>();
-        boolean overwrite = true;
-        ConfigurationParser cp = new ConfigurationParser(warnings);
-        Configuration config = cp.parseConfiguration(Surrogate.Generator.class.getResourceAsStream("/handler/generatorConfig.xml"));
-        DefaultShellCallback callback = new DefaultShellCallback(overwrite);
-        MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
-        myBatisGenerator.generate(null);
-    }
-
-
 
     public void generateByAllTable()throws Exception{
         Connection connection = DbManager.getConnect();

@@ -10,14 +10,18 @@ public class PropertiesUtils {
         return System.getProperty("user.dir");
     }
 
-    public static String getClassPath(){
+    public static String getClassLoaderPath(){
        return  Thread.currentThread().getContextClassLoader().getResource(".").getPath();
+    }
+
+    public static String getCurrentClassPath(Class clazz){
+        return  clazz.getResource(".").getPath();
     }
 
     public static void main(String[]args){
         String rootPath = getProjectBootPath();
         System.out.println(rootPath);
-        String path =  getClassPath();
+        String path =  getClassLoaderPath();
         System.out.println(path);
     }
 

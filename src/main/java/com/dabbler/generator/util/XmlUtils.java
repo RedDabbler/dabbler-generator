@@ -1,5 +1,6 @@
-package com.dabbler.generator.common.utils;
+package com.dabbler.generator.util;
 
+import com.dabbler.generator.common.utils.FileHelper;
 import com.dabbler.generator.entity.JavaBean;
 import com.dabbler.generator.entity.KeyValuePair;
 import com.google.common.base.Preconditions;
@@ -7,13 +8,12 @@ import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.List;
 
@@ -21,10 +21,25 @@ import java.util.List;
 public class XmlUtils {
 
     public static List<JavaBean> modelXmlParse(String filePath) throws Exception{
-        File file = new File(filePath);
-        Preconditions.checkArgument(file.exists()&&file.isFile(),"文件不存在");
-        InputStream inputStream  = new FileInputStream(file);
+        InputStream inputStream = FileHelper.getInputStream(filePath);
         return modelXmlParse(inputStream);
+    }
+
+
+
+    public static Document readXmlAsStream(InputStream inputStream)throws DocumentException{
+        Preconditions.checkNotNull(inputStream);
+        SAXReader saxReader = new SAXReader();
+        saxReader.setValidation(false);
+        Document document = saxReader.read(inputStream);
+        return document;
+    }
+
+    public static List getDocument(Document document){
+        Element rootElement = document.getRootElement();
+        String rootName = rootElement.getName();
+        List<Attribute> attributes = rootElement.attributes();
+        return attributes;
     }
 
 

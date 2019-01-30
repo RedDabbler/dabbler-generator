@@ -15,9 +15,8 @@ import java.util.Set;
 public class EntityMeta {
     private String className;
     private String classComment;
-//    private String packageName;
     private List<FieldMeta> fieldMetas;
-    private  FieldMeta primaryKeyField;
+    private FieldMeta primaryKeyField;
     private Set<String> fieldTypes;
 
 }

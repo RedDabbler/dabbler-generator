@@ -3,8 +3,7 @@ package com.dabbler.generator.common.utils;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -13,6 +12,17 @@ public class FileHelper {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * @param filePath
+     * @return
+     * @throws FileNotFoundException
+     */
+    public static InputStream getInputStream(String filePath)throws FileNotFoundException {
+        File file = new File(filePath);
+        Preconditions.checkArgument(file.exists() && file.isFile(),"文件不存在");
+        InputStream inputStream  = new FileInputStream(file);
+        return inputStream;
+    }
 
     public static boolean createIfNotExists(String filePath)throws IOException{
         File file = new File(filePath);

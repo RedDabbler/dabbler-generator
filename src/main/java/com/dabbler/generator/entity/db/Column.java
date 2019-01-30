@@ -1,6 +1,5 @@
 package com.dabbler.generator.entity.db;
 
-import com.dabbler.generator.entity.db.PrimaryKey;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
