@@ -48,7 +48,7 @@ public abstract class HibernateBaseDao<T> {
         hibernateTemplate.delete(entity);
     }
 
-    public T select(Integer id) {
+    public T selectById(Serializable id) {
         return (T) hibernateTemplate.get(entityClass, id);
     }
 

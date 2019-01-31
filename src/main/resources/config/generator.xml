@@ -2,6 +2,9 @@
     <outputdir>f:\\output</outputdir>
     <package>com.dabbler.template.sys</package>
     <module>simple-demo</module>
+    <packagingType>jar</packagingType>
+    <groupId>com.dabbler.template</groupId>
+    <artifactId>dabbler-template</artifactId>
 
 
 </generator>

@@ -10,42 +10,31 @@ import ${fieldType};
 /**
   * @author ${author}
   * @create ${createDate?string("yyyy-MM-dd hh:mm:ss")}
-  *
+  * DAO 如果只有一个实现类的话，没有必要抽象接口，否则，会给未来的扩展带来麻烦，可以将接口删掉，因此没有让实现类去implement
   */
-@Repository
-public class ${className}Dao{
 
-    public ${className} getById(${primaryKeyField.fieldType} ${primaryKeyField.fieldName}){
+public interface ${className}Dao{
 
-    }
+    public ${className} getById(${primaryKeyField.fieldType} ${primaryKeyField.fieldName});
 <#list fieldMetas as field>
 
    <#if !field.primary>
-    public List<${className}> listBy${field.fieldName?cap_first}(${field.fieldType}  ${field.fieldName}){
-    }
+    public List<${className}> listBy${field.fieldName?cap_first}(${field.fieldType}  ${field.fieldName});
    </#if>
 </#list>
 
-    public void save(${className} ${className?uncap_first}Save){
-        if(${className?uncap_first}Save.get${primaryKeyField.fieldName?cap_first}()==null){
-            insert(${className?uncap_first}Save);
-            return;
-        }
-        String id = ${className?uncap_first}Save.get${primaryKeyField.fieldName?cap_first}();
-        ${className} ${className?uncap_first}Po = getById(id);
+    public void save(${className} ${className?uncap_first}Save);
 
-        <#--是否有创建时间，更新时间字段-->
+    public void deleteById(${primaryKeyField.fieldType} ${primaryKeyField.fieldName});
 
+    public void delete(${className} ${className?uncap_first}Save);
 
-    }
+    public List<${className}> listAll();
 
-    private void insert(${className} ${className?uncap_first}){
-    }
+    public List<${className}> getByParam(Map parameter);
 
 
-    private void update(String id,${className} ${className?uncap_first}){
 
-    }
 
 
 

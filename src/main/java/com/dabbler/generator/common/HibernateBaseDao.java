@@ -10,6 +10,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.transform.Transformers;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
+import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.List;
@@ -51,7 +52,7 @@ public abstract class HibernateBaseDao<T> {
         hibernateTemplate.delete(entity);
     }
 
-    public T select(Integer id) {
+    public T selectById(Serializable id) {
         return (T) hibernateTemplate.get(entityClass, id);
     }
 

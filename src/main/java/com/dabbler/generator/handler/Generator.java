@@ -47,7 +47,7 @@ public class Generator {
     public static String getAuthor(){
         return "RedDabbler";
     }
-    // TODO
+    //TODO
     public static String getModule(){
         return "simple-demo";
     }
@@ -61,6 +61,9 @@ public class Generator {
         map.put("createDate",new Date());
         map.put("author",getAuthor());
         map.put("moduleName",getModule());
+        map.put("packagingType","jar");
+        map.put("groupId","com.dabbler.template");
+        map.put("artifactId","dabbler-template");
         return dataModel;
     }
 
