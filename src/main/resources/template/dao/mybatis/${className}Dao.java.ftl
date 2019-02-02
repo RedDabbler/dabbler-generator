@@ -1,6 +1,6 @@
 package ${basePackage}.dao;
 
-import ${basePackage}.dao.HibernateBaseDao;
+
 import ${basePackage}.entity.${className};
 <#list fieldTypes as fieldType>
     <#if !fieldType?string?starts_with("java.lang")>
@@ -14,17 +14,17 @@ import ${fieldType};
   *
   */
 @Repository
-public class ${className}HibernateDao extends HibernateBaseDao{
+public class ${className}Dao {
 
     public ${className} getById(${primaryKeyField.fieldType} ${primaryKeyField.fieldName}){
         return super.selectById(${primaryKeyField.fieldName});
     }
 <#list fieldMetas as field>
 
-   <#if !field.primary>
+    <#if !field.primary>
     public List<${className}> listBy${field.fieldName?cap_first}(${field.fieldType}  ${field.fieldName}){
     }
-   </#if>
+    </#if>
 </#list>
 
     public void save(${className} ${className?uncap_first}Save){
@@ -33,9 +33,9 @@ public class ${className}HibernateDao extends HibernateBaseDao{
             return;
         }
         String id = ${className?uncap_first}Save.get${primaryKeyField.fieldName?cap_first}();
-        ${className} ${className?uncap_first}Po = getById(id);
+${className} ${className?uncap_first}Po = getById(id);
 
-        <#--是否有创建时间，更新时间字段-->
+<#--是否有创建时间，更新时间字段-->
 
 
     }

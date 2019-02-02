@@ -3,13 +3,16 @@ package com.dabbler.generator.common;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.Transformers;
 import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
+import javax.annotation.Resource;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
@@ -24,12 +27,17 @@ import java.util.Map;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
 // 为保证正常获取泛型参数，必须有子类实现
-public abstract class HibernateBaseDao<T> {
+public abstract class HibernateBaseDao<T> extends HibernateDaoSupport {
     private Class<T> entityClass;
-    protected HibernateTemplate hibernateTemplate;
 
-    public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
-        this.hibernateTemplate = hibernateTemplate;
+
+    @Resource
+    public void setSessionFacotry(SessionFactory sessionFacotry) {
+        super.setSessionFactory(sessionFacotry);
+    }
+
+    private HibernateTemplate getTemplate(){
+        return super.getHibernateTemplate();
     }
 
     public HibernateBaseDao() {
@@ -41,29 +49,35 @@ public abstract class HibernateBaseDao<T> {
     }
 
     public void insert(T entity) {
-        hibernateTemplate.save(entity);
+        getTemplate().save(entity);
     }
 
     public void update(T entity) {
-        hibernateTemplate.update(entity);
+        getTemplate().update(entity);
     }
 
     public void delete(T entity) {
-        hibernateTemplate.delete(entity);
+        getTemplate().delete(entity);
     }
 
-    public T selectById(Serializable id) {
-        return (T) hibernateTemplate.get(entityClass, id);
+    protected void deleteById(Serializable id){
+       T data =  findById(id);
+       delete(data);
+    }
+
+
+    protected T findById(Serializable id) {
+        return (T) getTemplate().get(entityClass, id);
     }
 
 
     public List<T> findAll() {
-        return (List<T>)hibernateTemplate.find("from " + getEntityName());
+        return (List<T>)getTemplate().find("from " + getEntityName());
 
     }
 
     public int countAll() {
-        List list = hibernateTemplate.find("select count(*) from " + getEntityName());
+        List list = getTemplate().find("select count(*) from " + getEntityName());
         if (list != null) {
             Long count = (Long)list.get(0);
             return count.intValue();
@@ -78,7 +92,7 @@ public abstract class HibernateBaseDao<T> {
             dc.add(cs[i]);
         }
         dc.setProjection(Projections.rowCount());
-        List list = hibernateTemplate.findByCriteria(dc);
+        List list = getTemplate().findByCriteria(dc);
         if (list != null) {
             Long l = (Long) list.get(0);
             return l.intValue();
@@ -91,7 +105,7 @@ public abstract class HibernateBaseDao<T> {
         for (int i = 0; i < cs.length; i++) {
             dc.add(cs[i]);
         }
-        return (List<T>) hibernateTemplate.findByCriteria(dc);
+        return (List<T>) getTemplate().findByCriteria(dc);
     }
 
     /**
@@ -101,7 +115,7 @@ public abstract class HibernateBaseDao<T> {
      * @return
      */
     public List<T> findByPage(int pageNo, int pageSize,String fieldName) {
-        Session session = hibernateTemplate.getSessionFactory()
+        Session session = getTemplate().getSessionFactory()
                 .getCurrentSession();
         Criteria criteria = session.createCriteria(entityClass);
         return criteria.addOrder(Order.asc(fieldName))
@@ -115,17 +129,17 @@ public abstract class HibernateBaseDao<T> {
             dc.add(cs[i]);
         }
         if (pageSize == 0 && pageNo < 1) {
-            return (List<T>) hibernateTemplate.findByCriteria(dc);
+            return (List<T>) getTemplate().findByCriteria(dc);
         }
-        return (List<T>) hibernateTemplate.findByCriteria(dc, (pageNo - 1) * pageSize, pageSize);
+        return (List<T>) getTemplate().findByCriteria(dc, (pageNo - 1) * pageSize, pageSize);
     }
 
     public List<T> queryByhql(String hql) {
-        return (List<T>) hibernateTemplate.find(hql);
+        return (List<T>) getTemplate().find(hql);
     }
 
     public int getCount(String sql) {
-        Session session = hibernateTemplate.getSessionFactory()
+        Session session = getTemplate().getSessionFactory()
                 .getCurrentSession();
         Query query = session.createSQLQuery(sql);
         query.setCacheable(true);
@@ -136,7 +150,7 @@ public abstract class HibernateBaseDao<T> {
      * 依据SQL语句和参数，返回一个List<Map<String, Object>>集合
      */
     public List<Map<String, Object>> findBySqlGetListMap(String sql, Object... objects) {
-        Session session = hibernateTemplate.getSessionFactory().getCurrentSession();
+        Session session = getTemplate().getSessionFactory().getCurrentSession();
         Query query = session.createSQLQuery(sql).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         for (int i = 0; i < objects.length; i++) {
             query.setString(i, objects[i].toString());
@@ -149,7 +163,7 @@ public abstract class HibernateBaseDao<T> {
      * 依据SQL语句和参数，返回一个List<Object>集合
      */
     public List<Object> findBySql(String sql, Object... objects) {
-        Session session = hibernateTemplate.getSessionFactory()
+        Session session = getTemplate().getSessionFactory()
                 .getCurrentSession();
         Query query = session.createSQLQuery(sql).setResultTransformer(Transformers.TO_LIST);
         for (int i = 0; i < objects.length; i++) {
@@ -163,14 +177,18 @@ public abstract class HibernateBaseDao<T> {
      * 依据SQL语句，返回一个List<Object>集合
      */
     public List<Object> findBySql(String sql) {
-        Session session = hibernateTemplate.getSessionFactory().getCurrentSession();
+        Session session = getTemplate().getSessionFactory().getCurrentSession();
         Query query = session.createSQLQuery(sql).setResultTransformer(Transformers.TO_LIST);
         List<Object> list = query.list();
         return list;
     }
 
+    /**
+     * 批量删除
+     * @param entities
+     */
     public void deleteAll(Collection<T> entities) {
-        hibernateTemplate.deleteAll(entities);
+        getTemplate().deleteAll(entities);
     }
 
 }
