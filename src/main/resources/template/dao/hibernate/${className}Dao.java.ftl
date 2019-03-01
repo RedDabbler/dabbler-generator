@@ -1,7 +1,13 @@
 package ${basePackage}.dao;
 
 import ${basePackage}.dao.HibernateBaseDao;
+import org.springframework.stereotype.Repository;
 import ${basePackage}.entity.${className};
+import java.util.List;
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
+import java.util.Map;
 <#list fieldTypes as fieldType>
     <#if !fieldType?string?starts_with("java.lang")>
 import ${fieldType};
@@ -14,10 +20,10 @@ import ${fieldType};
   *
   */
 @Repository
-public class ${className}Dao extends HibernateBaseDao{
+public class ${className}Dao extends HibernateBaseDao<${className}>{
 
     public ${className} getById(${primaryKeyField.fieldType} ${primaryKeyField.fieldName}){
-        return super.selectById(${primaryKeyField.fieldName});
+        return super.findById(${primaryKeyField.fieldName});
     }
 <#list fieldMetas as field>
 
@@ -31,59 +37,51 @@ public class ${className}Dao extends HibernateBaseDao{
 
     public void save(${className} ${className?uncap_first}Save){
         if(${className?uncap_first}Save.get${primaryKeyField.fieldName?cap_first}()==null){
-            insert${className}(${className?uncap_first}Save);
+            insert(${className?uncap_first}Save);
             return;
         }
-    //  ${primaryKeyField.fieldType} id = ${className?uncap_first}Save.get${primaryKeyField.fieldName?cap_first}();
-    //  ${className} ${className?uncap_first}Po = getById(id);
-
-        updateTest(${className?uncap_first}Save);
-
-
-    }
-
-    private void insert${className}(${className} ${className?uncap_first}){
-         super.insert(${className?uncap_first});
-    }
-
-     /**
-     * suggest update only by pk
-     * @param ${className?uncap_first}
-     */
-    private void update${className}(${className} ${className?uncap_first}){
-        super.update("${primaryKeyField.fieldName}",${className?uncap_first});
+        update(${className?uncap_first}Save);
     }
 
     public void deleteById(${primaryKeyField.fieldType}  ${primaryKeyField.fieldName}){
         super.deleteById(${primaryKeyField.fieldName});
     }
 
-    public void deleteByName(String name){
-        List<Test> testList =  listByName(name);
-    super.deleteAll(testList);
+<#list fieldMetas as field>
+    <#if !field.primary>
+    public void deleteBy${field.fieldName?cap_first}(${field.fieldType}  ${field.fieldName}){
+        List<${className}> list =  listBy${field.fieldName?cap_first}(${field.fieldName});
+        super.deleteAll(list);
     }
+    </#if>
+</#list>
 
-    public void delete${className}(Test test){
-        super.delete(test);
-    }
+    /**
+      *  不定参数查询
+      */
+    public List<${className}> getByParam(Map<String,Object> parameter){
+<#list fieldMetas as field>
+    <#if !field.primary>
+        ${field.fieldType} ${field.fieldName}Param = (${field.fieldType})parameter.get("${field.fieldName}");
+    </#if>
+</#list>
+        Criteria criterion = getSession().createCriteria(${className}.class);
 
-    public List<Test> listAll(){
-        return  super.findAll();
+<#list fieldMetas as field>
+    <#if !field.primary>
+    <#if field.fieldType=="String">
+        if (StringUtils.isNotBlank(${field.fieldName}Param)){
+            criterion.add(Restrictions.eq("${field.fieldName}",${field.fieldName}Param));
         }
-
-        public List<Test> getByParam(Map<String,Object> parameter){
-            Integer id = (Integer)parameter.get("id");
-            String name = (String)parameter.get("name");
-            Criteria criterion = getSession().createCriteria(Test.class);
-            if (StringUtils.isNotBlank(name)){
-            criterion.add(Restrictions.eq("name",name));
-            }
-
-            if (id!=null){
-            criterion.add(Restrictions.eq("name",name));
-            }
-            return criterion.list();
-            }
+    <#else>
+        if (null != ${field.fieldName}Param){
+            criterion.add(Restrictions.eq("${field.fieldName}",${field.fieldName}Param));
+        }
+    </#if>
+    </#if>
+</#list>
+        return criterion.list();
+    }
 
 
 

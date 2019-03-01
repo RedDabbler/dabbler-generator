@@ -1,4 +1,4 @@
-package com.dabbler.generator.common;
+package com.dabbler.generator.demo;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -48,7 +48,7 @@ public abstract class HibernateBaseDao<T> extends HibernateDaoSupport {
         return entityClass.getSimpleName();
     }
 
-    public void insert(T entity) {
+    protected void insert(T entity) {
         getTemplate().save(entity);
     }
 

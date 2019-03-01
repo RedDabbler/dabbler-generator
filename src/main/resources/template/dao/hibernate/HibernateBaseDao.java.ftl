@@ -1,4 +1,4 @@
-package ${basePackage}.dao
+package ${basePackage}.dao;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -8,7 +8,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.Transformers;
 import org.springframework.orm.hibernate3.HibernateTemplate;
-
+import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.List;
@@ -34,6 +34,10 @@ public abstract class HibernateBaseDao<T> {
 
     private String getEntityName(){
         return entityClass.getSimpleName();
+    }
+
+    protected Session getSession(){
+        return hibernateTemplate.getSessionFactory().getCurrentSession();
     }
 
     public void insert(T entity) {
@@ -163,6 +167,7 @@ public abstract class HibernateBaseDao<T> {
     public void deleteAll(Collection<T> entities) {
         hibernateTemplate.deleteAll(entities);
     }
+
 
 }
 

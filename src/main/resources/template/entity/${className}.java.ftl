@@ -19,7 +19,7 @@ public class ${className} implements Serializable {
     <#if fieldMeta.primary>
     @Id
     </#if>
-    @Column(name="${fieldMeta.columnName}" <#if fieldMeta.fieldType=="String"> length = ${fieldMeta.length} <#if fieldMeta.notNull>, nullable = false </#if></#if>)
+    @Column(name="${fieldMeta.columnName}" <#if fieldMeta.fieldType=="String">,length = ${fieldMeta.length} <#if fieldMeta.notNull>, nullable = false </#if></#if>)
     private ${fieldMeta.fieldType} ${fieldMeta.fieldName};
     </#list>
 
