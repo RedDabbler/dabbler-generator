@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
   * @author ${author}
-  * @create ${createDate?string("yyyy-MM-dd hh:mm:ss")}
+  * @create ${createDate?string("yyyy-MM-dd HH:mm:ss")}
   *
   */
 @RestController

@@ -17,7 +17,7 @@ import java.util.Map;
 
 /**
  * @author ${author}
- * @create ${createDate?string("yyyy-MM-dd hh:mm:ss")}
+ * @create ${createDate?string("yyyy-MM-dd HH:mm:ss")}
  **/
 @SuppressWarnings({"rawtypes", "unchecked"})
 public abstract class HibernateBaseDao<T> {

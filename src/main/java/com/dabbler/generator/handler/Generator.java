@@ -7,6 +7,7 @@ import com.dabbler.generator.entity.db.Column;
 import com.dabbler.generator.entity.db.Table;
 import com.dabbler.generator.entity.enums.DataTypeMappingEnum;
 import com.dabbler.generator.provider.DbManager;
+import com.dabbler.generator.util.ContextHolder;
 import com.dabbler.generator.util.GeneratorUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -22,19 +23,25 @@ import java.util.*;
 public class Generator {
     private List<Exception> exceptions = Lists.newArrayList();
 
-    public void generateByAllTable()throws Exception{
+    public void generateByAllTable(){
         Connection connection = DbManager.getConnect();
         DatabaseMetaData databaseMetaData = DbManager.getDatabaseMetaData(connection);
-        List<Table> tables = DbManager.getAllTables(databaseMetaData);
-        for(Table table:tables){
-            generateByTable(table);
-            log.info("generate template files by table:{} complete ");
+        try{
+            List<Table> tables = DbManager.getAllTables(databaseMetaData);
+            for(Table table:tables){
+                generateByTable(table);
+                log.info("generate template files by table:{} complete ");
+            }
+        }catch (Exception e){
+            exceptions.add(e);
+        }finally {
+            log.info("generate complete, has {} exceptions",exceptions.size());
         }
+
     }
 
-    //TODO
     public static String getBasePackageName(){
-        return "com.company.sys";
+        return  ContextHolder.getProperties().getProperty("package");
     }
 
     public void generateByTable(Table table) throws IOException,TemplateException{
@@ -43,13 +50,11 @@ public class Generator {
         TemplateHandler.process(dataModel);
     }
 
-    //TODO
     public static String getAuthor(){
-        return "RedDabbler";
+        return ContextHolder.getProperties().getProperty("author");
     }
-    //TODO
     public static String getModule(){
-        return "simple-demo";
+        return  ContextHolder.getProperties().getProperty("module");
     }
     private DataModel getDataModel(Table table,EntityMeta entityMeta){
         DataModel dataModel = new DataModel();
@@ -125,22 +130,10 @@ public class Generator {
 
     public class DataModel{
         private Map DataMap = new HashMap();
-        private String generatorFilePath;
 
         public Map getDataMap() {
             return DataMap;
         }
 
-        public void setDataMap(Map dataMap) {
-            DataMap = dataMap;
-        }
-
-        public String getGeneratorFilePath() {
-            return generatorFilePath;
-        }
-
-        public void setGeneratorFilePath(String generatorFilePath) {
-            this.generatorFilePath = generatorFilePath;
-        }
     }
 }

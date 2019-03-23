@@ -4,6 +4,7 @@ import com.dabbler.generator.common.utils.StringHelper;
 import org.apache.commons.lang3.StringUtils;
 
 public class GeneratorUtils {
+
     private GeneratorUtils(){
         throw new UnsupportedOperationException();
     }

@@ -26,13 +26,14 @@ public class DbManagerTest {
 
     @Test
     public void getAllColumnTest() throws Exception{
-        PrimaryKey primaryKey = getPrimaryKey(databaseMetaData,"test");
-        List<Column> columnList = getAllColumn(databaseMetaData,"test",primaryKey);
+        PrimaryKey primaryKey = getPrimaryKey(databaseMetaData,"User");
+        List<Column> columnList = getAllColumn(databaseMetaData,"User",primaryKey);
     }
 
     @Test
     public void getPrimaryKeyTest() throws Exception{
-        PrimaryKey primaryKey = getPrimaryKey(databaseMetaData,"test");
-        log.info(primaryKey.toString());
+        PrimaryKey primaryKey = getPrimaryKey(databaseMetaData,"User");
+        log.info(primaryKey.getColumnName());
+
     }
 }

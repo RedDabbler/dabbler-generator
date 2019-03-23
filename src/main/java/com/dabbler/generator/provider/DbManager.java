@@ -4,6 +4,7 @@ import com.dabbler.generator.common.utils.JDBCUtils;
 import com.dabbler.generator.entity.db.Column;
 import com.dabbler.generator.entity.db.PrimaryKey;
 import com.dabbler.generator.entity.db.Table;
+import com.dabbler.generator.util.ContextHolder;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 
@@ -12,15 +13,28 @@ import java.util.List;
 
 @Slf4j
 public class DbManager {
-    private static String driverClass="com.mysql.jdbc.Driver";
-    private static String url="jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=UTF-8";
-    private static String userName="root";
-    private static String password="root";
     private static final String MYSQL_ALL_MATCH_PATTERN ="%";
+
+
+    private static String getDriverClass(){
+       return ContextHolder.getProperties().getProperty("driver");
+    }
+
+    private static String getUrl(){
+        return ContextHolder.getProperties().getProperty("url");
+    }
+
+    private static String getUserName(){
+        return ContextHolder.getProperties().getProperty("user");
+    }
+
+    private static String getPassword(){
+        return ContextHolder.getProperties().getProperty("password");
+    }
 
     // TODO 数据库连接池
     public static Connection getConnect(){
-        return JDBCUtils.getConnect(driverClass,url,userName,password);
+        return JDBCUtils.getConnect(getDriverClass(),getUrl(),getUserName(),getPassword());
     }
     public static DatabaseMetaData getDatabaseMetaData(Connection connection){
         try {

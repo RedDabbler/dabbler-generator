@@ -10,6 +10,7 @@ import java.util.Date;
 public enum DataTypeMappingEnum {
     BIT("BIT",Boolean.class),
     SMALLINT("SMALLINT",Short.class),
+    TINYINT("TINYINT",Short.class),
     BIGINT("BIGINT",Long.class),
     INT("INT",Integer.class),
     VARCHAR("VARCHAR",String.class),

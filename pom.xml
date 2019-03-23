@@ -58,6 +58,7 @@
             <artifactId>lombok</artifactId>
             <version>1.16.18</version>
         </dependency>
+
         <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -98,6 +99,7 @@
             <artifactId>freemarker</artifactId>
             <version>2.3.28</version>
         </dependency>
+
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
@@ -164,9 +166,13 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>7</source>
+                    <target>7</target>
+                </configuration>
                 <!--<configuration>-->
-                    <!--<source>7</source>-->
-                    <!--<target>7</target>-->
+                <!--<source>7</source>-->
+                <!--<target>7</target>-->
                 <!--</configuration>-->
             </plugin>
         </plugins>
