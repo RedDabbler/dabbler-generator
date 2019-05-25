@@ -4,6 +4,7 @@ import com.dabbler.generator.common.utils.FileHelper;
 import com.dabbler.generator.common.utils.FreeMarkerHelper;
 import com.dabbler.generator.common.utils.PropertiesUtils;
 import com.dabbler.generator.common.utils.StringHelper;
+import com.dabbler.generator.util.ContextHolder;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +19,7 @@ import java.util.Map;
 
 @Slf4j
 public class TemplateHandler {
-
+   // private final static  String PATH_TEMPLATE="";
     public static List<File> getTemplateFiles(String templateDir){
         File file = new File(templateDir);
         List<File> templateFiles = FileHelper.listFiles(file);
@@ -26,13 +27,6 @@ public class TemplateHandler {
         return templateFiles;
     }
 
-    public static String getOutPutPath(){
-        return "f:\\outputs";
-    }
-
-    public static String getBasePackageName(){
-        return "com.company.sys";
-    }
 
     public static String getTemplateDir(){
         return PropertiesUtils.getClassLoaderPath()+File.separator+"template";
@@ -56,9 +50,10 @@ public class TemplateHandler {
         String fileOutPutPath = getFilePath(template.getName(),dataMap);
 
         try {
-            FileHelper.createIfNotExists(fileOutPutPath);
+            FileHelper.recursionCreateIfNotExists(fileOutPutPath,false);
+            log.info("get and generate filePath :{} success",fileOutPutPath);
         } catch (IOException e) {
-            log.error("createIfNotExists file occur IOException",e);
+            log.error("generate file:{} occur IOException",fileOutPutPath,e);
         }
         FileWriter fileWriter = null;
         try {
@@ -76,20 +71,31 @@ public class TemplateHandler {
         }
     }
 
-    private static String getFilePath(String templateFileName, Map<String,Object> map){
-        String outputPath = getOutPutPath();
+    /**
+     *   generator the lastest filePath
+     *     ${outPut}//${module}//${packageDir}//${file}
+     *
+     * @param templateFileName
+     * @param map
+     * @return
+     */
+    private static String getFilePath(String templateFileName, Map<String,String> map){
       //  int start = templateFileName.lastIndexOf(File.separator)==-1?0:templateFileName.lastIndexOf(File.separator);
         int end = templateFileName.lastIndexOf(".ftl");
         String fileName = StringUtils.substring(templateFileName,0,end);
         fileName = StringHelper.placeHolderMatch(fileName,map);
-        String packagePath = getBasePackageName();
+        String packagePath = ContextHolder.getBasePackageName();
         String packageDirPath = packagePath.replaceAll("\\.","\\\\");
-        String filePath = outputPath + File.separator + packageDirPath + File.separator + fileName;
-        try {
-            FileHelper.createIfNotExists(filePath);
-        } catch (IOException e) {
-            log.error("createIfNotExists occur IOException",e);
+        String projectPath = map.get("projectPath");
+        String filePath = "";
+        if(fileName.startsWith("pom.xml")){
+            filePath = projectPath + fileName;
+        }else{
+            // FIXME 这里指定路径是src/main/java
+            String mainJavaPackage = map.get("mainJavaPath");
+            filePath = mainJavaPackage + packageDirPath + File.separator + fileName;
         }
         return filePath;
     }
+
 }

@@ -8,7 +8,7 @@ import ${fieldType};
 </#list>
 
 /**
-  * @author ${author}
+  * @author ${author!""}
   * @create ${createDate?string("yyyy-MM-dd HH:mm:ss")}
   * DAO 如果只有一个实现类的话，没有必要抽象接口，否则，会给未来的扩展带来麻烦，可以将接口删掉，因此没有让实现类去implement
   */

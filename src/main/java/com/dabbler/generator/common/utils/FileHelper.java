@@ -24,8 +24,27 @@ public class FileHelper {
         return inputStream;
     }
 
-    public static boolean createIfNotExists(String filePath)throws IOException{
+    /**
+     *
+     * @param filePath
+     * @param isDir 当前文件是否是文件夹
+     * @return
+     * @throws IOException
+     */
+    public static boolean recursionCreateIfNotExists(String filePath,boolean isDir)throws IOException{
         File file = new File(filePath);
+        if (file.exists()){
+            if(file.isDirectory() && isDir){
+                return true;
+            }
+            if(file.isFile() && !isDir){
+                return true;
+            }
+            throw new IllegalArgumentException(" create failed ! file has exists  but type not matched");
+        }
+        if(isDir){
+            file.mkdirs();
+        }
         File parentDir = file.getParentFile();
         if (!parentDir.exists()){
             parentDir.mkdirs();

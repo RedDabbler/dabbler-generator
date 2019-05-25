@@ -16,7 +16,7 @@ import java.util.Map;
 
 
 /**
- * @author ${author}
+ * @author ${author!""}
  * @create ${createDate?string("yyyy-MM-dd HH:mm:ss")}
  **/
 @SuppressWarnings({"rawtypes", "unchecked"})

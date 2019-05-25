@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 /**
-  * @author ${author}
+  * @author ${author!""}
   * @create ${createDate?string("yyyy-MM-dd HH:mm:ss")}
   *
   */

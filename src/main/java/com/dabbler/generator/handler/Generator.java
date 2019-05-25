@@ -1,6 +1,8 @@
 package com.dabbler.generator.handler;
 
 import com.dabbler.generator.common.utils.BeanHelper;
+import com.dabbler.generator.common.utils.FileHelper;
+import com.dabbler.generator.entity.Constants;
 import com.dabbler.generator.entity.EntityMeta;
 import com.dabbler.generator.entity.FieldMeta;
 import com.dabbler.generator.entity.db.Column;
@@ -14,6 +16,7 @@ import com.google.common.collect.Sets;
 import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -34,38 +37,54 @@ public class Generator {
             }
         }catch (Exception e){
             exceptions.add(e);
+            log.error("generate by all table occur exception:{}",e.getMessage(),e);
         }finally {
             log.info("generate complete, has {} exceptions",exceptions.size());
         }
 
     }
 
-    public static String getBasePackageName(){
-        return  ContextHolder.getProperties().getProperty("package");
-    }
-
     public void generateByTable(Table table) throws IOException,TemplateException{
         EntityMeta entityMeta = convert(table);
         DataModel dataModel = getDataModel(table,entityMeta);
+        generateMavenPath(dataModel);
         TemplateHandler.process(dataModel);
     }
 
-    public static String getAuthor(){
-        return ContextHolder.getProperties().getProperty("author");
+    private static void generateMavenPath(DataModel dataModel){
+        String outputPath = ContextHolder.getOutPutPath();
+        String modulePath = ContextHolder.getModule();
+        String projectPath = outputPath+ File.separator + modulePath + File.separator ;
+        dataModel.put("projectPath",projectPath);
+        String mainJavaPath = projectPath + Constants.main_java_package + File.separator ;
+        dataModel.put("mainJavaPath",mainJavaPath);
+        String testJavaPath = projectPath +  Constants.test_java_package + File.separator ;
+        dataModel.put("testJavaPath",testJavaPath);
+        String mainResourcesPath = projectPath + Constants.main_resources_package + File.separator ;;
+        dataModel.put("mainResourcesPath",mainResourcesPath);
+        String testResourcesPath = projectPath +  Constants.test_resources_package + File.separator ;
+        dataModel.put("testResourcesPath",testResourcesPath);
+        try {
+            FileHelper.recursionCreateIfNotExists(mainJavaPath,true);
+            FileHelper.recursionCreateIfNotExists(testJavaPath,true);
+            FileHelper.recursionCreateIfNotExists(mainResourcesPath,true);
+            FileHelper.recursionCreateIfNotExists(testResourcesPath,true);
+        }catch (Exception e){
+            log.error("generate maven path occur exception",e);
+        }
+
+
     }
-    public static String getModule(){
-        return  ContextHolder.getProperties().getProperty("module");
-    }
+
     private DataModel getDataModel(Table table,EntityMeta entityMeta){
         DataModel dataModel = new DataModel();
         Map map = dataModel.getDataMap();
         map.putAll(BeanHelper.descibe(entityMeta));
         map.putAll(BeanHelper.descibe(table));
-        String basePackage = getBasePackageName();
+        String basePackage = ContextHolder.getBasePackageName();
         map.put("basePackage",basePackage);
         map.put("createDate",new Date());
-        map.put("author",getAuthor());
-        map.put("moduleName",getModule());
+        map.put("moduleName",ContextHolder.getModule());
         map.put("packagingType","jar");
         map.put("groupId","com.dabbler.template");
         map.put("artifactId","dabbler-template");
@@ -129,10 +148,14 @@ public class Generator {
     }
 
     public class DataModel{
-        private Map DataMap = new HashMap();
+        private Map dataMap = new HashMap();
 
         public Map getDataMap() {
-            return DataMap;
+            return dataMap;
+        }
+
+        public void put(String key,String value){
+            dataMap.put(key,value);
         }
 
     }

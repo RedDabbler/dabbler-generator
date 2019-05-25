@@ -7,8 +7,11 @@
     </DbConnect>
 
     <author>RedDabbler</author>
+    <!-- nessary -->
     <outputdir>f:\\output</outputdir>
+    <!-- nessary -->
     <package>com.dabbler.template.sys</package>
+    <!-- nessary -->
     <module>simple-demo</module>
     <!-- pom -->
     <packagingType>jar</packagingType>

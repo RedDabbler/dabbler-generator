@@ -8,7 +8,7 @@ import ${basePackage}.dao.${className}Dao;
 
 
 /**
-  * @author ${author}
+  * @author ${author!}
   * @create ${createDate?string("yyyy-MM-dd HH:mm:ss")}
   *
   */

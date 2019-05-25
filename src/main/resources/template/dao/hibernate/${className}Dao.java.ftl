@@ -15,7 +15,7 @@ import ${fieldType};
 </#list>
 
 /**
-  * @author ${author}
+  * @author ${author!""}
   * @create ${createDate?string("yyyy-MM-dd HH:mm:ss")}
   *
   */

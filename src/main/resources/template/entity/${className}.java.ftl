@@ -7,7 +7,7 @@ import ${fieldType};
 </#list>
 
 /** @create ${createDate?string("yyyy-MM-dd HH:mm:ss")}
-  * @author ${author}
+  * @author ${author!}
   * ${(classComment)!}
   */
 @Entity

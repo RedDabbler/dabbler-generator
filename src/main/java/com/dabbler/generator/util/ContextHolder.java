@@ -23,5 +23,18 @@ public class ContextHolder {
         }
     }
 
+    public static String getBasePackageName(){
+        return  getProperties().getProperty("package");
+    }
+    public static String getAuthor(){
+        return getProperties().getProperty("author");
+    }
+    public static String getModule(){
+        return  getProperties().getProperty("module");
+    }
+
+    public static String getOutPutPath(){ return getProperties().getProperty("outputdir");}
+
+
 
 }

@@ -25,7 +25,7 @@ public class StringHelper {
      * @param map
      * @return
      */
-    public static String placeHolderMatch(String str, Map<String,Object> map){
+    public static String placeHolderMatch(String str, Map<String,String> map){
         StringBuilder stringBuilder = new StringBuilder(str);
         while(true) {
             int start = stringBuilder.indexOf("$");
@@ -37,7 +37,7 @@ public class StringHelper {
             String startStr = stringBuilder.substring(0, start);
             String placeHolder = stringBuilder.substring(begin + 1, end);
             String endStr = stringBuilder.substring(end + 1);
-            String value = (String) map.get(placeHolder);
+            String value = map.get(placeHolder);
 
             stringBuilder = new StringBuilder(startStr).append(value).append(endStr);
         }
