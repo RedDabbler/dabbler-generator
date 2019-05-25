@@ -1,12 +1,18 @@
 package ${basePackage}.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.io.Serializable;
 <#list fieldTypes as fieldType>
 <#if !fieldType?string?starts_with("java.lang")>
 import ${fieldType};
 </#if>
 </#list>
 
-/** @create ${createDate?string("yyyy-MM-dd HH:mm:ss")}
+/**
+  * @create ${createDate!.now?string("yyyy-MM-dd HH:mm:ss")}
   * @author ${author!}
   * ${(classComment)!}
   */
@@ -41,10 +47,8 @@ public class ${className} implements Serializable {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("${className}{");
-        <#list fieldMetas as fieldMeta>
-            sb.append("${fieldMeta.fieldName}='").append(${fieldMeta.fieldName}).append("',");
-        </#list>
-        sb.append('}');
+        sb<#list fieldMetas as fieldMeta>
+            .append("${fieldMeta.fieldName}='").append(${fieldMeta.fieldName}).append("',")</#list>.append('}');
         return sb.toString();
     }
 

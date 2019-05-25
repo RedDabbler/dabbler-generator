@@ -1,4 +1,4 @@
-package ${basePackage}.dao;
+package ${basePackage}.dao.hibernate;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -17,7 +17,7 @@ import java.util.Map;
 
 /**
  * @author ${author!""}
- * @create ${createDate?string("yyyy-MM-dd HH:mm:ss")}
+ * @create ${(createDate!.now)?string("yyyy-MM-dd HH:mm:ss")}
  **/
 @SuppressWarnings({"rawtypes", "unchecked"})
 public abstract class HibernateBaseDao<T> {

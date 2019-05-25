@@ -10,13 +10,15 @@
     <!-- nessary -->
     <outputdir>f:\\output</outputdir>
     <!-- nessary -->
-    <package>com.dabbler.template.sys</package>
+    <basePackage>com.dabbler.template.sys</basePackage>
     <!-- nessary -->
     <module>simple-demo</module>
     <!-- pom -->
     <packagingType>jar</packagingType>
     <groupId>com.dabbler.template</groupId>
     <artifactId>dabbler-template</artifactId>
+    <!-- nessary -->
+    <daoPackage>hibernate</daoPackage>
 
 
 </generator>

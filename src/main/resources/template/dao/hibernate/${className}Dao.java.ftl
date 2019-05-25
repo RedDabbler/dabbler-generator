@@ -1,6 +1,5 @@
-package ${basePackage}.dao;
+package ${basePackage}.dao.hibernate;
 
-import ${basePackage}.dao.HibernateBaseDao;
 import org.springframework.stereotype.Repository;
 import ${basePackage}.entity.${className};
 import java.util.List;
@@ -16,14 +15,14 @@ import ${fieldType};
 
 /**
   * @author ${author!""}
-  * @create ${createDate?string("yyyy-MM-dd HH:mm:ss")}
+  * @create ${createDate!.now?string("yyyy-MM-dd HH:mm:ss")}
   *
   */
 @Repository
 public class ${className}Dao extends HibernateBaseDao<${className}>{
 
     public ${className} getById(${primaryKeyField.fieldType} ${primaryKeyField.fieldName}){
-        return super.findById(${primaryKeyField.fieldName});
+        return super.selectById(${primaryKeyField.fieldName});
     }
 <#list fieldMetas as field>
 
@@ -44,7 +43,8 @@ public class ${className}Dao extends HibernateBaseDao<${className}>{
     }
 
     public void deleteById(${primaryKeyField.fieldType}  ${primaryKeyField.fieldName}){
-        super.deleteById(${primaryKeyField.fieldName});
+        ${className} ${className?uncap_first} = getById(${primaryKeyField.fieldName});
+        super.delete(${className?uncap_first});
     }
 
 <#list fieldMetas as field>

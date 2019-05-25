@@ -1,7 +1,10 @@
-package ${basePackage}.dao;
+package ${basePackage}.dao.mybatis;
 
 
 import ${basePackage}.entity.${className};
+import java.util.List;
+import com.google.common.collect.Lists;
+import org.springframework.stereotype.Repository;
 <#list fieldTypes as fieldType>
     <#if !fieldType?string?starts_with("java.lang")>
 import ${fieldType};
@@ -10,19 +13,20 @@ import ${fieldType};
 
 /**
   * @author ${author!""}
-  * @create ${createDate?string("yyyy-MM-dd HH:mm:ss")}
+  * @create ${createDate!.now?string("yyyy-MM-dd HH:mm:ss")}
   *
   */
 @Repository
 public class ${className}Dao {
 
     public ${className} getById(${primaryKeyField.fieldType} ${primaryKeyField.fieldName}){
-        return super.selectById(${primaryKeyField.fieldName});
+        return null;
     }
 <#list fieldMetas as field>
 
     <#if !field.primary>
     public List<${className}> listBy${field.fieldName?cap_first}(${field.fieldType}  ${field.fieldName}){
+        return Lists.newArrayList();
     }
     </#if>
 </#list>
@@ -32,8 +36,8 @@ public class ${className}Dao {
             insert(${className?uncap_first}Save);
             return;
         }
-        String id = ${className?uncap_first}Save.get${primaryKeyField.fieldName?cap_first}();
-${className} ${className?uncap_first}Po = getById(id);
+        ${primaryKeyField.fieldType} id = ${className?uncap_first}Save.get${primaryKeyField.fieldName?cap_first}();
+        ${className} ${className?uncap_first}Po = getById(id);
 
 <#--是否有创建时间，更新时间字段-->
 

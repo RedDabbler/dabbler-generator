@@ -3,13 +3,15 @@ package ${basePackage}.service;
 import org.springframework.stereotype.*;
 import org.springframework.beans.factory.annotation.*;
 import javax.annotation.*;
+import java.util.List;
+import java.util.Date;
 import ${basePackage}.entity.${className};
-import ${basePackage}.dao.${className}Dao;
+import ${basePackage}.dao.${daoPackage}.${className}Dao;
 
 
 /**
   * @author ${author!}
-  * @create ${createDate?string("yyyy-MM-dd HH:mm:ss")}
+  * @create ${createDate!.now?string("yyyy-MM-dd HH:mm:ss")}
   *
   */
 @Service
@@ -29,7 +31,7 @@ public class ${className}Service{
     <#list fieldMetas as fieldMeta>
     <#if !fieldMeta.primary>
     public List<${className}> get${className}By${fieldMeta.fieldName?cap_first}(${fieldMeta.fieldType} ${fieldMeta.fieldName}){
-        return ${className?uncap_first}Dao.get${className}By${fieldMeta.fieldName?cap_first}(${fieldMeta.fieldName});
+        return ${className?uncap_first}Dao.listBy${fieldMeta.fieldName?cap_first}(${fieldMeta.fieldName});
     }
     </#if>
 

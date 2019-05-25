@@ -81,13 +81,15 @@ public class Generator {
         Map map = dataModel.getDataMap();
         map.putAll(BeanHelper.descibe(entityMeta));
         map.putAll(BeanHelper.descibe(table));
-        String basePackage = ContextHolder.getBasePackageName();
-        map.put("basePackage",basePackage);
-        map.put("createDate",new Date());
-        map.put("moduleName",ContextHolder.getModule());
-        map.put("packagingType","jar");
-        map.put("groupId","com.dabbler.template");
-        map.put("artifactId","dabbler-template");
+        map.putAll(ContextHolder.getConfigMap());
+
+//        String basePackage = ContextHolder.getBasePackageName();
+//        map.put("basePackage",basePackage);
+//        map.put("createDate",new Date());
+//        map.put("moduleName",ContextHolder.getModule());
+//        map.put("packagingType","jar");
+//        map.put("groupId","com.dabbler.template");
+//        map.put("artifactId","dabbler-template");
         return dataModel;
     }
 

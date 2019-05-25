@@ -1,6 +1,8 @@
 package ${basePackage}.dao;
 
 import ${basePackage}.entity.${className};
+import java.util.List;
+import java.util.Map;
 <#list fieldTypes as fieldType>
     <#if !fieldType?string?starts_with("java.lang")>
 import ${fieldType};
@@ -9,7 +11,7 @@ import ${fieldType};
 
 /**
   * @author ${author!""}
-  * @create ${createDate?string("yyyy-MM-dd HH:mm:ss")}
+  * @create ${createDate!.now?string("yyyy-MM-dd HH:mm:ss")}
   * DAO 如果只有一个实现类的话，没有必要抽象接口，否则，会给未来的扩展带来麻烦，可以将接口删掉，因此没有让实现类去implement
   */
 
