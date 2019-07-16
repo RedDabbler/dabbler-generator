@@ -17,7 +17,9 @@ import ${fieldType};
 
 public interface ${className}Dao{
 
+<#if primaryKeyField??>
     public ${className} getById(${primaryKeyField.fieldType} ${primaryKeyField.fieldName});
+</#if>
 <#list fieldMetas as field>
 
    <#if !field.primary>
@@ -26,9 +28,9 @@ public interface ${className}Dao{
 </#list>
 
     public void save(${className} ${className?uncap_first}Save);
-
+<#if primaryKeyField??>
     public void deleteById(${primaryKeyField.fieldType} ${primaryKeyField.fieldName});
-
+</#if>
     public void delete(${className} ${className?uncap_first}Save);
 
     public List<${className}> listAll();

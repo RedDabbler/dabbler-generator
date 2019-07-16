@@ -21,9 +21,11 @@ import ${fieldType};
 @Repository
 public class ${className}Dao extends HibernateBaseDao<${className}>{
 
+<#if primaryKeyField??>
     public ${className} getById(${primaryKeyField.fieldType} ${primaryKeyField.fieldName}){
         return super.selectById(${primaryKeyField.fieldName});
     }
+</#if>
 <#list fieldMetas as field>
 
    <#if !field.primary>
@@ -35,18 +37,20 @@ public class ${className}Dao extends HibernateBaseDao<${className}>{
 </#list>
 
     public void save(${className} ${className?uncap_first}Save){
+<#if primaryKeyField??>
         if(${className?uncap_first}Save.get${primaryKeyField.fieldName?cap_first}()==null){
             insert(${className?uncap_first}Save);
             return;
         }
+</#if>
         update(${className?uncap_first}Save);
     }
-
+<#if primaryKeyField??>
     public void deleteById(${primaryKeyField.fieldType}  ${primaryKeyField.fieldName}){
         ${className} ${className?uncap_first} = getById(${primaryKeyField.fieldName});
         super.delete(${className?uncap_first});
     }
-
+</#if>
 <#list fieldMetas as field>
     <#if !field.primary>
     public void deleteBy${field.fieldName?cap_first}(${field.fieldType}  ${field.fieldName}){

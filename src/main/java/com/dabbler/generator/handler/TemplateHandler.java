@@ -38,6 +38,7 @@ public class TemplateHandler {
         List<File> files = getTemplateFiles(templateDir);
         for (File file:files){
             Path relativePath = FileHelper.getRelativePath(file,templateDirFile);
+            log.debug("generatorFile:{}",templateDir);
             Template template = FreeMarkerHelper.getTemplate(templateDir,relativePath.toString());
             generateFile(template,dataModel);
         }
@@ -60,6 +61,7 @@ public class TemplateHandler {
             fileWriter = new FileWriter(new File(fileOutPutPath));
             template.process(dataModel.getDataMap(),fileWriter);
         } catch (IOException e) {
+            log.error("genernate file:{} failed",fileOutPutPath);
             e.printStackTrace();
         }finally {
             try {

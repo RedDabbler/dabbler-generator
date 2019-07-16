@@ -19,6 +19,7 @@ public class ${className}RestController{
     @Resource
     private ${className}Service ${className?uncap_first}Service;
 
+<#if primaryKeyField??>
     @RequestMapping(value="/info/{${primaryKeyField.fieldName}}",method = RequestMethod.GET)
     public Result info(@PathVariable("${primaryKeyField.fieldName}") ${primaryKeyField.fieldType} ${primaryKeyField.fieldName}){
         ${className} ${className?uncap_first} = ${className?uncap_first}Service.getById(${primaryKeyField.fieldName});
@@ -31,7 +32,7 @@ public class ${className}RestController{
         LOG.info("request /update/{} to update{} success:",${primaryKeyField.fieldName},${className?uncap_first}.toString());
         return Result.build().ok();
     }
-
+</#if>
 
 
 }

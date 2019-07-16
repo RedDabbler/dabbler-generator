@@ -50,7 +50,7 @@ public class DbManager {
         ResultSet resultSet = databaseMetaData.getTables(null,null,MYSQL_ALL_MATCH_PATTERN,null);
         while(resultSet.next()){
             Table table = new Table();
-            String tableName = resultSet.getString("TABLE_NAME");
+            String tableName = resultSet.getString("TABLE_NAME").toUpperCase();
             String tableComment = resultSet.getString("REMARKS");
             String tableType = resultSet.getString("TABLE_TYPE");
             PrimaryKey primaryKey = getPrimaryKey(databaseMetaData,tableName);
@@ -77,8 +77,8 @@ public class DbManager {
         ResultSet resultSet = databaseMetaData.getColumns(null,null,tableName,MYSQL_ALL_MATCH_PATTERN);
         while (resultSet.next()){
             Column column = new Column();
-            column.setTableName(resultSet.getString("TABLE_NAME"));
-            column.setColumnName(resultSet.getString("COLUMN_NAME"));
+            column.setTableName(resultSet.getString("TABLE_NAME").toUpperCase());
+            column.setColumnName(resultSet.getString("COLUMN_NAME").toUpperCase());
             column.setDataType(resultSet.getInt("DATA_TYPE"));
             column.setTypeName(resultSet.getString("TYPE_NAME"));
             column.setColumnSize(resultSet.getInt("COLUMN_SIZE"));
@@ -96,7 +96,7 @@ public class DbManager {
         while (resultSet.next()){
             PrimaryKey primaryKey = new PrimaryKey();
             primaryKey.setTableName(resultSet.getString("TABLE_NAME"));
-            primaryKey.setColumnName(resultSet.getString("COLUMN_NAME"));
+            primaryKey.setColumnName(resultSet.getString("COLUMN_NAME").toUpperCase());
             primaryKey.setKeySeq(resultSet.getShort("KEY_SEQ"));
             primaryKey.setPkName(resultSet.getString("PK_NAME"));
             primaryKeys.add(primaryKey);

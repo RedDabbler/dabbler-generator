@@ -29,19 +29,24 @@ public class Generator {
     public void generateByAllTable(){
         Connection connection = DbManager.getConnect();
         DatabaseMetaData databaseMetaData = DbManager.getDatabaseMetaData(connection);
+        List<Table> tables = Lists.newArrayList();
         try{
-            List<Table> tables = DbManager.getAllTables(databaseMetaData);
-            for(Table table:tables){
-                generateByTable(table);
-                log.info("generate template files by table:{} complete ");
-            }
-        }catch (Exception e){
+            tables = DbManager.getAllTables(databaseMetaData);
+        }catch (Exception e) {
             exceptions.add(e);
-            log.error("generate by all table occur exception:{}",e.getMessage(),e);
-        }finally {
-            log.info("generate complete, has {} exceptions",exceptions.size());
+            log.error("generate by all table occur exception:{}", e.getMessage(), e);
+        }
+        for(Table table:tables){
+            log.info("prepare to generate by table:{}",table.getTableName());
+            try{
+                generateByTable(table);
+            }catch (Exception e) {
+                exceptions.add(e);
+                log.error("generate by all table occur exception:{}", e.getMessage(), e);
+            }
         }
 
+        // TODO 打印所有异常
     }
 
     public void generateByTable(Table table) throws IOException,TemplateException{
@@ -111,7 +116,7 @@ public class Generator {
         entityMeta.setPrimaryKeyField(getPrimaryKeyField(fieldMetas));
         entityMeta.setClassComment(table.getTableComment());
         String tableName = table.getTableName();
-        entityMeta.setClassName(GeneratorUtils.tableToClass(tableName));
+        entityMeta.setClassName(GeneratorUtils.tableToClass(tableName.toLowerCase()));
         entityMeta.setFieldTypes(fieldTypeFullNames);
 
         return entityMeta;
@@ -135,7 +140,7 @@ public class Generator {
         FieldMeta fieldMeta = new FieldMeta();
         fieldMeta.setFieldComment(column.getColumnComment());
         fieldMeta.setColumnName(column.getColumnName());
-        fieldMeta.setFieldName(GeneratorUtils.columnToField(column.getColumnName()));
+        fieldMeta.setFieldName(GeneratorUtils.columnToField(column.getColumnName().toLowerCase()));
         fieldMeta.setPrimary(column.isPrimary());
         fieldMeta.setNotNull(column.isNotNull());
         fieldMeta.setClassName(GeneratorUtils.tableToClass(column.getTableName()));

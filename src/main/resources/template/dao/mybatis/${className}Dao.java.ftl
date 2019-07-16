@@ -18,10 +18,11 @@ import ${fieldType};
   */
 @Repository
 public class ${className}Dao {
-
+<#if primaryKeyField??>
     public ${className} getById(${primaryKeyField.fieldType} ${primaryKeyField.fieldName}){
         return null;
     }
+</#if>
 <#list fieldMetas as field>
 
     <#if !field.primary>
@@ -30,19 +31,19 @@ public class ${className}Dao {
     }
     </#if>
 </#list>
-
+<#if primaryKeyField??>
     public void save(${className} ${className?uncap_first}Save){
+
         if(${className?uncap_first}Save.get${primaryKeyField.fieldName?cap_first}()==null){
             insert(${className?uncap_first}Save);
             return;
         }
+
         ${primaryKeyField.fieldType} id = ${className?uncap_first}Save.get${primaryKeyField.fieldName?cap_first}();
         ${className} ${className?uncap_first}Po = getById(id);
 
-<#--是否有创建时间，更新时间字段-->
-
-
     }
+</#if>
 
     private void insert(${className} ${className?uncap_first}){
     }

@@ -1,6 +1,6 @@
 <generator>
     <DbConnect type="mysql">
-        <url>jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=UTF-8</url>
+        <url>jdbc:mysql://localhost:3306/ides?useUnicode=true&amp;characterEncoding=UTF-8</url>
         <driver>com.mysql.jdbc.Driver</driver>
         <user>root</user>
         <password>root</password>
