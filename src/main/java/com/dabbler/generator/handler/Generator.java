@@ -1,7 +1,5 @@
 package com.dabbler.generator.handler;
 
-import com.dabbler.generator.common.utils.BeanHelper;
-import com.dabbler.generator.common.utils.FileHelper;
 import com.dabbler.generator.entity.Constants;
 import com.dabbler.generator.entity.EntityMeta;
 import com.dabbler.generator.entity.FieldMeta;

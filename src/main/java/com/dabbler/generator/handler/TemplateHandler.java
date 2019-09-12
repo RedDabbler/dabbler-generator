@@ -1,9 +1,6 @@
 package com.dabbler.generator.handler;
 
-import com.dabbler.generator.common.utils.FileHelper;
 import com.dabbler.generator.common.utils.FreeMarkerHelper;
-import com.dabbler.generator.common.utils.PropertiesUtils;
-import com.dabbler.generator.common.utils.StringHelper;
 import com.dabbler.generator.util.ContextHolder;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;

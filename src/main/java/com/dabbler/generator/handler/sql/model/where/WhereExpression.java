@@ -1,6 +1,5 @@
 package com.dabbler.generator.handler.sql.model.where;
 
-import com.dabbler.generator.common.utils.ConvertUtils;
 import com.google.common.collect.Lists;
 import com.dabbler.generator.handler.sql.model.OperatorEnum;
 import com.dabbler.generator.handler.sql.model.SQLConstant;

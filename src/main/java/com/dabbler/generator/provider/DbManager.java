@@ -1,6 +1,5 @@
 package com.dabbler.generator.provider;
 
-import com.dabbler.generator.common.utils.JDBCUtils;
 import com.dabbler.generator.entity.db.Column;
 import com.dabbler.generator.entity.db.PrimaryKey;
 import com.dabbler.generator.entity.db.Table;

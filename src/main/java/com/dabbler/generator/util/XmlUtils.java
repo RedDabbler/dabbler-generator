@@ -1,7 +1,5 @@
 package com.dabbler.generator.util;
 
-import com.dabbler.generator.common.utils.FileHelper;
-import com.dabbler.generator.common.utils.PropertiesUtils;
 import com.dabbler.generator.entity.JavaBean;
 import com.dabbler.generator.entity.KeyValuePair;
 import com.google.common.base.Preconditions;
