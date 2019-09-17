@@ -2,12 +2,16 @@ package com.dabbler.generator.handler;
 
 import com.dabbler.generator.common.utils.FreeMarkerHelper;
 import com.dabbler.generator.util.ContextHolder;
+import com.redDabbler.template.tools.utils.FileHelper;
+import com.redDabbler.template.tools.utils.PropertiesUtils;
+import com.redDabbler.template.tools.utils.StringHelper;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -19,7 +23,13 @@ public class TemplateHandler {
    // private final static  String PATH_TEMPLATE="";
     public static List<File> getTemplateFiles(String templateDir){
         File file = new File(templateDir);
-        List<File> templateFiles = FileHelper.listFiles(file);
+
+        List<File> templateFiles = null;
+        try {
+            templateFiles = FileHelper.listFiles(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         log.info("get templateFiles size:{}", templateFiles.size());
         return templateFiles;
     }

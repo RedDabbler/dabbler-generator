@@ -1,5 +1,6 @@
 package com.dabbler.generator.util;
 
+import com.redDabbler.template.tools.utils.StringHelper;
 import org.apache.commons.lang3.StringUtils;
 
 public class GeneratorUtils {

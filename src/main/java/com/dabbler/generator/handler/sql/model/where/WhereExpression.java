@@ -3,6 +3,7 @@ package com.dabbler.generator.handler.sql.model.where;
 import com.google.common.collect.Lists;
 import com.dabbler.generator.handler.sql.model.OperatorEnum;
 import com.dabbler.generator.handler.sql.model.SQLConstant;
+import com.redDabbler.template.tools.utils.ConvertUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -93,7 +94,7 @@ public abstract class WhereExpression<T> {
         private List<T> values;
         @Override
         protected String generate() {
-            return super.getLeftOfOperator() + operatorEnum.getOperator() + ConvertUtils.convertListToStr(values);
+            return super.getLeftOfOperator() + operatorEnum.getOperator() + ConvertUtils.listToStr(values,",");
         }
     }
 

@@ -5,6 +5,8 @@ import com.dabbler.generator.entity.KeyValuePair;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.redDabbler.template.tools.utils.FileHelper;
+import com.redDabbler.template.tools.utils.PropertiesUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;

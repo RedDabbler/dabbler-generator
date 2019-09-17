@@ -5,6 +5,7 @@ import com.dabbler.generator.entity.db.PrimaryKey;
 import com.dabbler.generator.entity.db.Table;
 import com.dabbler.generator.util.ContextHolder;
 import com.google.common.collect.Lists;
+import com.redDabbler.template.tools.utils.JDBCUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;

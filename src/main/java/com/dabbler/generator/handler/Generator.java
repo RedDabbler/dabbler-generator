@@ -11,6 +11,8 @@ import com.dabbler.generator.util.ContextHolder;
 import com.dabbler.generator.util.GeneratorUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.redDabbler.template.tools.utils.BeanHelper;
+import com.redDabbler.template.tools.utils.FileHelper;
 import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
 
